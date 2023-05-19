@@ -5,7 +5,7 @@ import requests
 import json
 from conf import conf
 import random
-
+import prompt
 
 
 
@@ -43,6 +43,7 @@ def random_route(model_id : int):
 
 
 app = FastAPI()
+prompt_generator = prompt.prompt_generator()
 
 
 @app.get("/")
@@ -53,6 +54,10 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
 	return {"item_id": item_id, "q": q}
+
+@app.get("/v1/random_prompt")
+def random_prompt():
+	return prompt_generator.random_prompt()
 
 @app.post("/v1/text2img")
 def text2img(item:Item):
